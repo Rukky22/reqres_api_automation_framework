@@ -1,4 +1,4 @@
-name: 🧪 API Automation Tests
+name: 🧪 API Automation Tests with Allure
 
 on:
   push:
@@ -24,13 +24,21 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run pytest
+      - name: Run pytest with Allure
         run: |
-          pytest -v --maxfail=1 --disable-warnings --tb=short
+          pytest --alluredir=reports/allure-results
 
-      - name: Upload test results (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@v1.7
         with:
-          name: pytest-results
-          path: reports/
+          allure_results: reports/allure-results
+          allure_report: reports/allure-report
+          allure_history: reports/allure-history
+          keep_reports: 20
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: reports/allure-report
