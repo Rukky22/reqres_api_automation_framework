@@ -1,5 +1,7 @@
 # Reqres API Automation Framework 🚀
 
+![CI](https://github.com/Rukky22/reqres_api_automation_framework/actions/workflows/python-tests.yml/badge.svg)
+
 A scalable and maintainable **Python API Test Automation Framework** built using:
 
 - **Pytest** – test execution & reporting
